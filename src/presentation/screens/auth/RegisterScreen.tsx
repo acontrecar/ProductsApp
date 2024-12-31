@@ -66,8 +66,12 @@ export const RegisterScreen = () => {
           }}
         >
           <Text>Ya tienes cuenta?</Text>
-          <Text status="primary" category="s1" onPress={() => router.back()}>
-            Crea una
+          <Text
+            status="primary"
+            category="s1"
+            onPress={() => router.push("/login")}
+          >
+            Ingrese
           </Text>
         </Layout>
       </ScrollView>

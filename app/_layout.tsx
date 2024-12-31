@@ -24,6 +24,9 @@ export default function _layout() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, // Asegura que el layout ocupe toda la pantalla
+    //backgroundColor: "#FFF", // Fondo global
+    //justifyContent: "center",
+    //alignItems: "center",
   },
 });

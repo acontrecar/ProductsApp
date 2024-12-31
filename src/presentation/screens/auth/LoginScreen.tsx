@@ -63,7 +63,7 @@ export const LoginScreen = () => {
           <Text
             status="primary"
             category="s1"
-            onPress={() => router.push("/auth/register")}
+            onPress={() => router.push("register")}
           >
             Crea una
           </Text>
