@@ -12,6 +12,6 @@ export default function index() {
     //   <Button accessoryLeft={<Icon name="facebook" />}>Cerrar Sesion</Button>
     // </Layout>
     // <ProductsApp />
-    <Redirect href="login" />
+    <Redirect href="loading" />
   );
 }

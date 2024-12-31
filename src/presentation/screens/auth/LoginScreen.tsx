@@ -1,17 +1,45 @@
 import { Button, Input, Layout, Text } from "@ui-kitten/components";
-import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { Alert, ScrollView, useWindowDimensions } from "react-native";
 import { MyIcon } from "../../components/ui/MyIcon";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
+import getEnvVars from "../../../../constants/api";
+import { useAuthStore } from "../../store/auth/useAuthStore";
 
 export const LoginScreen = () => {
   const { height } = useWindowDimensions();
   const router = useRouter();
+
+  // const { API_URL } = getEnvVars();
+  const { login } = useAuthStore();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [isPosting, setIsPosting] = useState(false);
+
+  const onLogin = async () => {
+    if (form.email === "" || form.password === "") {
+      return;
+    }
+
+    setIsPosting(true);
+
+    const wasSuccessful = await login(form.email, form.password);
+
+    setIsPosting(false);
+
+    if (wasSuccessful) {
+      router.push("home");
+      return;
+    }
+
+    Alert.alert("Error", "Credenciales incorrectas", [
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+  };
 
   return (
     <Layout style={{ marginHorizontal: 20 }}>
@@ -26,6 +54,8 @@ export const LoginScreen = () => {
             placeholder="Correo electronico"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={form.email}
+            onChangeText={(email) => setForm({ ...form, email })}
             accessoryLeft={<MyIcon name="email-outline" />}
             style={{ marginBottom: 10 }}
           />
@@ -34,6 +64,8 @@ export const LoginScreen = () => {
             placeholder="Contraseña"
             autoCapitalize="none"
             secureTextEntry
+            value={form.password}
+            onChangeText={(password) => setForm({ ...form, password })}
             accessoryLeft={<MyIcon name="lock-outline" />}
             style={{ marginBottom: 10 }}
           />
@@ -43,8 +75,9 @@ export const LoginScreen = () => {
 
         <Layout>
           <Button
+            disabled={isPosting}
             accessoryRight={<MyIcon name="arrow-forward-outline" white />}
-            onPress={() => {}}
+            onPress={onLogin}
           >
             Ingresar
           </Button>
