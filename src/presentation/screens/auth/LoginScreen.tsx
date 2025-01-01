@@ -32,7 +32,7 @@ export const LoginScreen = () => {
     setIsPosting(false);
 
     if (wasSuccessful) {
-      router.push("home");
+      router.push("/products/home");
       return;
     }
 

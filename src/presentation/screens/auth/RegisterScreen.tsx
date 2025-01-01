@@ -37,7 +37,7 @@ export const RegisterScreen = () => {
     setIsPosting(false);
 
     if (wasSuccessful) {
-      router.push("home");
+      router.push("/products/home");
       return;
     }
 

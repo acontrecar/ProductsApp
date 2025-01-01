@@ -5,13 +5,16 @@ import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import React from "react";
 import { AuthProvider } from "../src/providers/AuthProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function _layout() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? eva.dark : eva.light;
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <IconRegistry icons={EvaIconsPack} />
 
       <AuthProvider>
@@ -21,7 +24,7 @@ export default function _layout() {
           </View>
         </ApplicationProvider>
       </AuthProvider>
-    </>
+    </QueryClientProvider>
   );
 }
 

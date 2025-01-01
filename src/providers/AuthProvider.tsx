@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (status !== "cheking") {
       if (status === "authenticated") {
-        router.push("home");
+        router.push("/products/home");
       } else {
         router.push("login");
       }

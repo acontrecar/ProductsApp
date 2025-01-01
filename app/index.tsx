@@ -1,6 +1,4 @@
 import { Redirect } from "expo-router";
-import { LoginScreen } from "../src/presentation/screens/auth/LoginScreen";
-import { ProductsApp } from "../src/ProductsApp";
 
 export default function index() {
   return (

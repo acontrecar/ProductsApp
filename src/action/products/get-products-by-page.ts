@@ -8,7 +8,7 @@ export const getProductsyPage = async (page: number, limit: number = 20) => {
       `/products?offset=${page * 10}&limit=${limit}`
     );
 
-    console.log({ data });
+    // console.log({ data });
 
     const products = data.map(ProductMapper.toEntity);
     return products;
