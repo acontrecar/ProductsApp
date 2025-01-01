@@ -22,7 +22,7 @@ export default function HomeScreen() {
   //   queryFn: () => getProductsyPage(0),
   // });
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { isLoading, data, fetchNextPage } = useInfiniteQuery({
     queryKey: ["products", "infinite"],
@@ -31,8 +31,13 @@ export default function HomeScreen() {
 
     queryFn: async (params) => {
       // console.log({ params });
-      return await getProductsyPage(params.pageParam ?? 0);
-      // return products;
+      // return await getProductsyPage(params.pageParam ?? 0);
+
+      const products = await getProductsyPage(params.pageParam ?? 0);
+      products.forEach((product) => {
+        queryClient.setQueryData(["product", product.id], product);
+      });
+      return products;
     },
 
     getNextPageParam: (lastPage, allPages) => {
