@@ -15,7 +15,9 @@ export const ProductsList = ({ products, fetchNextPage }: Props) => {
 
   const queryClient = new QueryClient();
 
-  const sortedProducts = [...products].sort((a, b) => a.id.localeCompare(b.id));
+  const sortedProducts = [...products].sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
 
   const onPullToRefresh = async () => {
     setIsRefreshing(true);

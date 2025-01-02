@@ -18,7 +18,10 @@ export const ProductCard = ({ product }: Props) => {
       onPress={() => router.push(`/products/${product.id}`)}
     >
       {product.images.length === 0 ? (
-        <Image source={require("../../../../assets/no-product-image.png")} />
+        <Image
+          source={require("../../../../assets/no-product-image.png")}
+          style={{ height: 200, width: "100%" }}
+        />
       ) : (
         <FadeInImage
           uri={product.images[0]}

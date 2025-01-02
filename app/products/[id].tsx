@@ -1,29 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  Button,
-  ButtonGroup,
-  Input,
-  Layout,
-  Text,
-  useTheme,
-} from "@ui-kitten/components";
+import { Button, ButtonGroup, Input, Layout } from "@ui-kitten/components";
 import { useLocalSearchParams } from "expo-router";
 import { Product } from "../../src/domain/entities/product";
 import { getProductById } from "../../src/action/products/get-product-by-id";
 import { MainLayout } from "../../src/presentation/layouts/MainLayout";
 import { useRef } from "react";
-import { FlatList, ScrollView } from "react-native";
-import { FadeInImage } from "../../src/presentation/components/ui/FadeInImage";
-import {
-  Gender,
-  Size,
-} from "../../src/infraestructure/interfaces/teslo-products.response";
+import { ScrollView } from "react-native";
+
 import { MyIcon } from "../../src/presentation/components/ui/MyIcon";
 import { Formik } from "formik";
 import { updateCreateProduct } from "../../src/action/products/update-create-product";
-
-const sizes: Size[] = [Size.Xs, Size.S, Size.M, Size.L, Size.Xl, Size.Xxl];
-const gender: Gender[] = [Gender.Kid, Gender.Men, Gender.Unisex, Gender.Women];
+import { ProductImages } from "../../src/presentation/components/products/ProductImages";
+import { gender, sizes } from "../../constants/constants";
+import { CameraAdapter } from "../../src/config/adapters/camera-adapter";
 
 export default function ProductScreen() {
   const productIdRef = useRef(useLocalSearchParams().id);
@@ -55,21 +44,24 @@ export default function ProductScreen() {
   return (
     <Formik initialValues={product} onSubmit={mutations.mutate}>
       {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
-        <MainLayout title={values.title} subTitle={`Precio: ${values.price}`}>
+        <MainLayout
+          title={values.title}
+          subTitle={`Precio: ${values.price}`}
+          rightAction={async () => {
+            const photos = await CameraAdapter.getPicturesFromLibrary();
+            setFieldValue("images", [...values.images, ...photos]);
+          }}
+          rightActionIcon="camera-outline"
+        >
           <ScrollView style={{ flex: 1 }}>
-            <Layout>
-              <FlatList
-                data={values.images}
-                horizontal
-                keyExtractor={(item) => item}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <FadeInImage
-                    uri={item}
-                    style={{ width: 300, height: 300, marginHorizontal: 2 }}
-                  />
-                )}
-              />
+            <Layout
+              style={{
+                marginVertical: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ProductImages images={values.images} />
             </Layout>
 
             <Layout style={{ marginHorizontal: 10 }}>
@@ -177,8 +169,6 @@ export default function ProductScreen() {
             >
               Guardar
             </Button>
-
-            <Text>{JSON.stringify(values, null, 2)}</Text>
 
             <Layout style={{ height: 200 }} />
           </ScrollView>

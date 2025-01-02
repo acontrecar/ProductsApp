@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Layout, Text } from "@ui-kitten/components";
 import { MyIcon } from "../../src/presentation/components/ui/MyIcon";
 import { useAuthStore } from "../../src/presentation/store/auth/useAuthStore";
@@ -10,9 +11,11 @@ import {
 import { MainLayout } from "../../src/presentation/layouts/MainLayout";
 import { FullScreenLoader } from "../../src/presentation/components/ui/FullScreenLoader";
 import { ProductsList } from "../../src/presentation/components/products/ProductsList";
+import { FAB } from "../../src/presentation/components/ui/FAB";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
-  const { logOut } = useAuthStore();
+  // const { logOut } = useAuthStore();
 
   // getProductsyPage(0);
 
@@ -21,6 +24,8 @@ export default function HomeScreen() {
   //   staleTime: 1000 * 60 * 60,
   //   queryFn: () => getProductsyPage(0),
   // });
+
+  const router = useRouter();
 
   const queryClient = useQueryClient();
 
@@ -46,19 +51,28 @@ export default function HomeScreen() {
   });
 
   return (
-    <MainLayout
-      title="TesloShop-Products"
-      subTitle="Aplicacion administrativa"
-      rightAction={() => {}}
-    >
-      {isLoading ? (
-        <FullScreenLoader />
-      ) : (
-        <ProductsList
-          fetchNextPage={fetchNextPage}
-          products={data?.pages.flat() ?? []}
-        />
-      )}
-    </MainLayout>
+    <>
+      <MainLayout
+        title="TesloShop-Products"
+        subTitle="Aplicacion administrativa"
+        rightAction={() => {}}
+      >
+        {isLoading ? (
+          <FullScreenLoader />
+        ) : (
+          <ProductsList
+            fetchNextPage={fetchNextPage}
+            products={data?.pages.flat() ?? []}
+          />
+        )}
+      </MainLayout>
+      <FAB
+        iconName="plus-outline"
+        onPress={() => {
+          router.push("/products/new");
+        }}
+        style={{ position: "absolute", bottom: 30, right: 20 }}
+      />
+    </>
   );
 }
